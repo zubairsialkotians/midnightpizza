@@ -59,8 +59,16 @@ module.exports = {
         backgroundColor: iconBg,
       },
       edgeToEdgeEnabled: true,
-      // No ads or ad tracking: keep libraries from adding the advertising ID permission
-      blockedPermissions: ['com.google.android.gms.permission.AD_ID'],
+      // Play Store: ask only for what the app uses (internet, notifications, camera for product photos).
+      // No ads/tracking (AD_ID); photos come from the system photo picker, so no storage access;
+      // SYSTEM_ALERT_WINDOW is only for the dev menu.
+      blockedPermissions: [
+        'com.google.android.gms.permission.AD_ID',
+        'android.permission.READ_EXTERNAL_STORAGE',
+        'android.permission.WRITE_EXTERNAL_STORAGE',
+        'android.permission.SYSTEM_ALERT_WINDOW',
+        'android.permission.RECORD_AUDIO',
+      ],
       ...(fs.existsSync(googleServicesFile) ? { googleServicesFile } : {}),
     },
     web: { favicon: './assets/favicon.png' },

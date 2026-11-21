@@ -39,3 +39,6 @@ yarn-error.*
 store/
 .yarn/
 .claude/
+play-service-account.json
+# Builds use npm (package-lock.json)
+yarn.lock

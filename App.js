@@ -51,6 +51,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import NewsScreen from './screens/NewsScreen';
 import NewsDetailScreen from './screens/NewsDetailScreen';
 import ContactScreen from './screens/ContactScreen';
+import PrivacyScreen from './screens/PrivacyScreen';
 import AdminNewsScreen from './screens/AdminNewsScreen';
 import NewsFormScreen from './screens/NewsFormScreen';
 import AdminBannersScreen from './screens/AdminBannersScreen';
@@ -101,7 +102,7 @@ const ROUTES = {
     Home: HomeScreen, Product: ProductScreen, Cart: CartScreen, Checkout: CheckoutScreen, OrderPlaced: OrderPlacedScreen,
     Account: AccountScreen, Login: LoginScreen, Register: RegisterScreen, ForgotPassword: ForgotPasswordScreen,
     Profile: ProfileScreen, Password: PasswordScreen, MyOrders: MyOrdersScreen, MyOrderDetail: MyOrderDetailScreen, Bill: BillScreen,
-    News: NewsScreen, NewsDetail: NewsDetailScreen, Contact: ContactScreen,
+    News: NewsScreen, NewsDetail: NewsDetailScreen, Contact: ContactScreen, Privacy: PrivacyScreen,
   },
   staff: {
     AdminHome: AdminHomeScreen, AdminOrders: AdminOrdersScreen, AdminOrderDetail: AdminOrderDetailScreen,
