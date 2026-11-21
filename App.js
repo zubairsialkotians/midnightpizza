@@ -12,7 +12,7 @@ import { CartProvider } from './components/CartContext';
 import DismissKeyboard from './components/DismissKeyboard';
 import { Button } from './components/ui';
 import { APP_NAME, SHOP_KEY } from './config';
-import { colors } from './theme';
+import { colors, fonts } from './theme';
 
 // Shopping
 import HomeScreen from './screens/HomeScreen';
@@ -115,17 +115,17 @@ const ROUTES = {
 // Shown while the shop info loads on first launch (after the native splash)
 function Splash({ shop, error, onRetry }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', padding: 24 }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.brand, padding: 24 }}>
       {shop?.logo_url
         ? <Image source={{ uri: shop.logo_url }} style={{ width: 120, height: 120, borderRadius: 24 }} resizeMode="contain" />
         : <Image source={require('./assets/icon.png')} style={{ width: 110, height: 110, borderRadius: 24 }} />}
-      <Text style={{ fontSize: 26, fontWeight: '800', color: colors.primaryDark, marginTop: 16 }}>{shop?.name || APP_NAME}</Text>
+      <Text style={{ fontSize: 26, fontWeight: '700', color: colors.onBrand, fontFamily: fonts.display, textTransform: 'uppercase', letterSpacing: 2, marginTop: 16 }}>{shop?.name || APP_NAME}</Text>
       {error ? (
         <>
-          <Text style={{ color: colors.danger, textAlign: 'center', marginTop: 16 }}>{error}</Text>
+          <Text style={{ color: '#ff8a7a', textAlign: 'center', marginTop: 16 }}>{error}</Text>
           <Button title="Try again" variant="outline" small onPress={onRetry} style={{ marginTop: 12 }} />
         </>
-      ) : <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />}
+      ) : <ActivityIndicator color={colors.onBrand} style={{ marginTop: 20 }} />}
     </View>
   );
 }
@@ -165,7 +165,7 @@ export default function App() {
         <AuthProvider>
           <CartProvider>
             <NavigationContainer ref={navigationRef}>
-              <StatusBar style="dark" />
+              <StatusBar style="light" />
               <NotificationListeners />
               <Routes />
             </NavigationContainer>

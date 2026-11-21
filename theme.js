@@ -1,6 +1,8 @@
 // Brand colour comes from .env (EXPO_PUBLIC_PRIMARY_COLOR) so each shop's copy of the app has its own look.
 // brand = fills (buttons, chips, cart bar); primary = text/icons/borders on white.
 // For a light brand (e.g. yellow) text on fills turns dark and primary uses EXPO_PUBLIC_ACCENT_COLOR or a darker shade.
+import { Platform } from 'react-native';
+
 const isHex = (v) => /^#[0-9a-fA-F]{6}$/.test(v || '');
 const brand = isHex(process.env.EXPO_PUBLIC_PRIMARY_COLOR) ? process.env.EXPO_PUBLIC_PRIMARY_COLOR : '#1c1a17';
 // Optional text colour on brand fills (e.g. cream on black); also tints the soft backgrounds
@@ -36,14 +38,15 @@ export const colors = {
   onBrand: onBrandEnv || (lightBrand ? '#1a1a1a' : '#ffffff'),
   primary,
   primaryDark: shade(primary, 0.35),
-  primarySoft: onBrandEnv && !lightBrand ? tint(onBrandEnv, 0.55) : tint(brand, lightBrand ? 0.8 : 0.88),
-  black: '#0b1020',
-  surface: '#ffffff',
-  background: '#faf7f2',
-  border: '#ede7dc',
-  text: '#111827',
-  muted: '#64748b',
-  faint: '#94a3b8',
+  primarySoft: onBrandEnv && !lightBrand ? onBrandEnv : tint(brand, lightBrand ? 0.8 : 0.88),
+  // Midnight Pizza: warm black ink on cream paper (matches the logo)
+  black: '#1c1a17',
+  surface: '#fffdf6',
+  background: '#f4eedd',
+  border: '#e3d8b8',
+  text: '#1c1a17',
+  muted: '#6b6352',
+  faint: '#a39a85',
   success: '#15803d',
   successSoft: '#e7f6ec',
   danger: '#c0392b',
@@ -62,4 +65,9 @@ export const statusColors = {
   cancelled:        { fg: '#c0392b', bg: '#fbe9e7' },
   active:           { fg: '#15803d', bg: '#e7f6ec' },
   inactive:         { fg: '#64748b', bg: '#eef1f5' },
+};
+
+// Display face for titles: a serif, like the slab lettering in the logo
+export const fonts = {
+  display: Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia, serif' }),
 };

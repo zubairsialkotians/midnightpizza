@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../theme';
+import { colors, fonts } from '../theme';
 import { money, perUnit, qtyLabel } from '../services/format';
 import { nextQty, prevQty } from '../services/qty';
 import { useCart } from './CartContext';
@@ -22,11 +22,11 @@ export function QtyStepper({ product, qty, onChange, small, testID }) {
   return (
     <View style={[st.stepper, small && { height: 34 }]} testID={testID}>
       <TouchableOpacity style={st.stepBtn} onPress={() => onChange(prevQty(qty, product))} hitSlop={6} testID={testID && `${testID}-dec`}>
-        <Ionicons name={prevQty(qty, product) === 0 ? 'trash-outline' : 'remove'} size={small ? 16 : 18} color={colors.brand} />
+        <Ionicons name={prevQty(qty, product) === 0 ? 'trash-outline' : 'remove'} size={small ? 16 : 18} color={colors.onBrand} />
       </TouchableOpacity>
       <Text style={[st.stepText, small && { fontSize: 13 }]} numberOfLines={1}>{qtyLabel(qty, product.unit)}</Text>
       <TouchableOpacity style={[st.stepBtn, atMax && { opacity: 0.4 }]} disabled={atMax} onPress={() => onChange(nextQty(qty, product))} hitSlop={6} testID={testID && `${testID}-inc`}>
-        <Ionicons name="add" size={small ? 16 : 18} color={colors.brand} />
+        <Ionicons name="add" size={small ? 16 : 18} color={colors.onBrand} />
       </TouchableOpacity>
     </View>
   );
@@ -52,13 +52,13 @@ export function ProductCard({ p, onPress, width }) {
         <Text style={st.cardName} numberOfLines={2}>{p.name}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, flexWrap: 'wrap', marginTop: 4 }}>
           <Text style={st.cardPrice}>{sized ? `from ${money(p.price)}` : oneSize ? money(p.sizes[0].price) : perUnit(p.price, p.unit)}</Text>
-          {!!oneSize && <Text style={{ fontSize: 12, color: colors.muted, fontWeight: '700' }}>{oneSize}</Text>}
+          {!!oneSize && <Text style={{ fontSize: 12, color: colors.onBrand, opacity: 0.65, fontWeight: '700' }}>{oneSize}</Text>}
           {off > 0 && <Text style={st.strike}>{money(p.compare_price)}</Text>}
         </View>
         <View style={{ flex: 1 }} />
         {sized && p.in_stock && (
           <TouchableOpacity style={st.addBtn} onPress={onPress} testID={`sizes-${p.id}`}>
-            <Ionicons name={inCart > 0 ? 'checkmark' : 'resize-outline'} size={16} color={colors.onBrand} />
+            <Ionicons name={inCart > 0 ? 'checkmark' : 'resize-outline'} size={16} color={colors.brand} />
             <Text style={st.addText}>{inCart > 0 ? `${inCart} in cart · add more` : 'Choose size'}</Text>
           </TouchableOpacity>
         )}
@@ -66,7 +66,7 @@ export function ProductCard({ p, onPress, width }) {
           ? <QtyStepper small product={p} qty={inCart} onChange={(q) => cart.setQty(p.id, q, p, oneSize)} testID={`card-${p.id}`} />
           : (
             <TouchableOpacity style={st.addBtn} onPress={() => cart.add(p, oneSize ? 1 : first, oneSize)} testID={`add-${p.id}`}>
-              <Ionicons name="add" size={16} color={colors.onBrand} />
+              <Ionicons name="add" size={16} color={colors.brand} />
               <Text style={st.addText}>{oneSize ? 'Add to cart' : `Add ${qtyLabel(first, p.unit)}`}</Text>
             </TouchableOpacity>
           ))}
@@ -88,33 +88,33 @@ export function IconBadge({ icon, count, dot, onPress, testID }) {
 }
 
 const st = StyleSheet.create({
-  dot: { position: 'absolute', top: 5, right: 5, width: 10, height: 10, borderRadius: 5, backgroundColor: colors.sale, borderWidth: 1.5, borderColor: '#fff' },
+  dot: { position: 'absolute', top: 5, right: 5, width: 10, height: 10, borderRadius: 5, backgroundColor: colors.sale, borderWidth: 1.5, borderColor: colors.brand },
   card: {
-    backgroundColor: '#fff', borderRadius: 18, overflow: 'hidden', marginBottom: 12,
+    backgroundColor: colors.brand, borderRadius: 12, overflow: 'hidden', marginBottom: 12,
     shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 3,
   },
   cardImg: { width: '100%', aspectRatio: 1 },
-  cardName: { fontSize: 14, fontWeight: '700', color: colors.text, minHeight: 36 },
-  cardPrice: { fontSize: 15, fontWeight: '800', color: colors.primary },
-  strike: { fontSize: 12, color: colors.faint, textDecorationLine: 'line-through' },
-  offBadge: { position: 'absolute', top: 8, left: 8, backgroundColor: colors.sale, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 3 },
+  cardName: { fontSize: 14, fontWeight: '700', color: colors.onBrand, fontFamily: fonts.display, minHeight: 36 },
+  cardPrice: { fontSize: 15, fontWeight: '800', color: colors.onBrand },
+  strike: { fontSize: 12, color: colors.onBrand, opacity: 0.5, textDecorationLine: 'line-through' },
+  offBadge: { position: 'absolute', top: 8, left: 8, backgroundColor: colors.sale, borderRadius: 4, paddingHorizontal: 8, paddingVertical: 3 },
   offText: { color: '#fff', fontSize: 11, fontWeight: '800' },
   soldOut: { position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(17,24,39,0.7)', paddingVertical: 4 },
   soldOutText: { color: '#fff', textAlign: 'center', fontWeight: '700', fontSize: 12 },
   addBtn: {
-    marginTop: 8, height: 36, borderRadius: 18, backgroundColor: colors.brand, flexDirection: 'row',
+    marginTop: 8, height: 36, borderRadius: 6, backgroundColor: colors.onBrand, flexDirection: 'row',
     alignItems: 'center', justifyContent: 'center', gap: 4,
   },
-  addText: { color: colors.onBrand, fontWeight: '800', fontSize: 13 },
+  addText: { color: colors.brand, fontWeight: '800', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.6 },
   stepper: {
-    marginTop: 8, height: 40, borderRadius: 20, backgroundColor: colors.black, flexDirection: 'row', alignItems: 'center',
+    marginTop: 8, height: 40, borderRadius: 6, backgroundColor: colors.black, borderWidth: 1.5, borderColor: colors.onBrand, flexDirection: 'row', alignItems: 'center',
     justifyContent: 'space-between', paddingHorizontal: 4,
   },
   stepBtn: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
-  stepText: { color: '#fff', fontWeight: '800', fontSize: 15, flexShrink: 1 },
+  stepText: { color: colors.onBrand, fontWeight: '800', fontSize: 15, flexShrink: 1 },
   bubble: {
     position: 'absolute', top: 0, right: 0, backgroundColor: colors.sale, borderRadius: 10, minWidth: 20, height: 20,
-    alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, borderWidth: 1.5, borderColor: '#fff',
+    alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, borderWidth: 1.5, borderColor: colors.brand,
   },
   bubbleText: { color: '#fff', fontSize: 10, fontWeight: '800' },
 });

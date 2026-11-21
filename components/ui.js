@@ -6,7 +6,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { colors, statusColors } from '../theme';
+import { colors, statusColors, fonts } from '../theme';
 import { RANGE_PRESETS, RANGE_LABELS, rangeFor, rangeLabel, isYmd } from '../services/format';
 import { useAuth } from './AuthContext';
 
@@ -33,7 +33,7 @@ export function Screen({
       <View style={s.header}>
         {canBack ? (
           <TouchableOpacity onPress={() => navigation.goBack()} style={s.headerBtn} hitSlop={10}>
-            <Ionicons name="arrow-back" size={22} color={colors.text} />
+            <Ionicons name="arrow-back" size={22} color={colors.onBrand} />
           </TouchableOpacity>
         ) : <View style={{ width: 4 }} />}
         <View style={{ flex: 1 }}>
@@ -42,7 +42,7 @@ export function Screen({
         </View>
         {right}
       </View>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView style={{ flex: 1, backgroundColor: colors.background }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {body}
         {footer}
       </KeyboardAvoidingView>
@@ -53,7 +53,7 @@ export function Screen({
 export function HeaderButton({ icon, onPress, badge }) {
   return (
     <TouchableOpacity onPress={onPress} style={s.headerBtn} hitSlop={8}>
-      <Ionicons name={icon} size={22} color={colors.primary} />
+      <Ionicons name={icon} size={22} color={colors.onBrand} />
       {!!badge && <View style={s.dot}><Text style={s.dotText}>{badge > 99 ? '99+' : badge}</Text></View>}
     </TouchableOpacity>
   );
@@ -84,7 +84,7 @@ export function SectionTitle({ children, right }) {
 export function Button({ title, onPress, variant = 'primary', loading, disabled, icon, small, style, testID }) {
   const v = {
     primary: { bg: colors.brand, fg: colors.onBrand, border: colors.brand },
-    outline: { bg: '#fff', fg: colors.primary, border: colors.primary },
+    outline: { bg: colors.surface, fg: colors.primary, border: colors.primary },
     danger: { bg: colors.danger, fg: '#fff', border: colors.danger },
     success: { bg: colors.success, fg: '#fff', border: colors.success },
     ghost: { bg: colors.primarySoft, fg: colors.primary, border: colors.primarySoft },
@@ -145,7 +145,7 @@ export function Segmented({ options, value, onChange }) {
     <View style={s.seg}>
       {options.map((o) => (
         <TouchableOpacity key={o.value} style={[s.segItem, value === o.value && s.segActive]} onPress={() => onChange(o.value)}>
-          <Text style={[s.segText, value === o.value && { color: colors.primary }]} numberOfLines={1}>{o.label}</Text>
+          <Text style={[s.segText, value === o.value && { color: colors.onBrand }]} numberOfLines={1}>{o.label}</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -414,48 +414,48 @@ export function DateRangeBar({ value, onChange, presets = RANGE_PRESETS }) {
 /* ---------------- Styles ---------------- */
 
 export const s = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: colors.brand },
   header: {
-    flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 10,
-    backgroundColor: colors.surface, borderBottomWidth: 1, borderBottomColor: colors.border,
+    flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 12,
+    backgroundColor: colors.brand, borderBottomWidth: 3, borderBottomColor: colors.onBrand,
   },
   headerBtn: { padding: 6 },
-  headerTitle: { fontSize: 18, fontWeight: '800', color: colors.black },
-  headerSub: { fontSize: 12, color: colors.muted, marginTop: 1 },
+  headerTitle: { fontSize: 18, fontWeight: '700', color: colors.onBrand, fontFamily: fonts.display, textTransform: 'uppercase', letterSpacing: 1.5 },
+  headerSub: { fontSize: 12, color: colors.onBrand, opacity: 0.7, marginTop: 1 },
   dot: { position: 'absolute', top: 0, right: 0, backgroundColor: colors.danger, borderRadius: 9, minWidth: 18, height: 18, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
   dotText: { color: '#fff', fontSize: 10, fontWeight: '800' },
   body: { padding: 14 },
   footer: { padding: 12, backgroundColor: colors.surface, borderTopWidth: 1, borderTopColor: colors.border },
-  card: { backgroundColor: colors.surface, borderRadius: 18, padding: 14, borderWidth: 1, borderColor: colors.border, marginBottom: 12 },
+  card: { backgroundColor: colors.surface, borderRadius: 10, padding: 14, borderWidth: 1, borderColor: colors.border, marginBottom: 12 },
   sectionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8, marginBottom: 8 },
-  section: { fontSize: 13, fontWeight: '800', color: colors.muted, textTransform: 'uppercase', letterSpacing: 0.6 },
-  btn: { height: 50, borderRadius: 25, borderWidth: 1.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16 },
-  btnSmall: { height: 38, borderRadius: 19, paddingHorizontal: 12 },
-  btnText: { fontSize: 15, fontWeight: '700' },
+  section: { fontSize: 14, fontWeight: '700', color: colors.text, fontFamily: fonts.display, textTransform: 'uppercase', letterSpacing: 1.5 },
+  btn: { height: 50, borderRadius: 8, borderWidth: 1.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingHorizontal: 16 },
+  btnSmall: { height: 38, borderRadius: 6, paddingHorizontal: 12 },
+  btnText: { fontSize: 14, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 1 },
   label: { fontSize: 13, fontWeight: '700', color: colors.text, marginBottom: 6 },
   input: {
-    backgroundColor: '#fff', borderWidth: 1.5, borderColor: colors.border, borderRadius: 14,
+    backgroundColor: colors.surface, borderWidth: 1.5, borderColor: colors.border, borderRadius: 8,
     paddingHorizontal: 14, height: 48, fontSize: 15, color: colors.text, outlineStyle: 'none',
   },
   select: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   error: { fontSize: 12, color: colors.danger, marginTop: 4 },
   hint: { fontSize: 12, color: colors.faint, marginTop: 4 },
   chip: {
-    flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, height: 34, borderRadius: 17,
-    backgroundColor: '#fff', borderWidth: 1, borderColor: colors.border, alignSelf: 'flex-start',
+    flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, height: 34, borderRadius: 6,
+    backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, alignSelf: 'flex-start',
   },
   chipActive: { backgroundColor: colors.brand, borderColor: colors.brand },
   chipText: { fontSize: 13, fontWeight: '600', color: colors.text, maxWidth: 220 },
-  seg: { flexDirection: 'row', backgroundColor: '#e7ebf3', borderRadius: 12, padding: 3, marginBottom: 12 },
-  segItem: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 10 },
-  segActive: { backgroundColor: '#fff' },
+  seg: { flexDirection: 'row', backgroundColor: colors.border, borderRadius: 8, padding: 3, marginBottom: 12 },
+  segItem: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 6 },
+  segActive: { backgroundColor: colors.brand },
   segText: { fontSize: 13, fontWeight: '700', color: colors.muted },
   badge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8 },
   badgeText: { fontSize: 11, fontWeight: '800', textTransform: 'capitalize' },
   empty: { alignItems: 'center', justifyContent: 'center', paddingVertical: 48, paddingHorizontal: 24 },
   emptyText: { marginTop: 10, color: colors.muted, fontSize: 14, textAlign: 'center' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 12 },
-  stat: { flexGrow: 1, flexBasis: '45%', backgroundColor: colors.surface, borderRadius: 14, padding: 12, borderWidth: 1, borderColor: colors.border },
+  stat: { flexGrow: 1, flexBasis: '45%', backgroundColor: colors.surface, borderRadius: 8, padding: 12, borderWidth: 1, borderColor: colors.border },
   statLabel: { fontSize: 12, color: colors.muted, fontWeight: '600', flexShrink: 1 },
   statValue: { fontSize: 19, fontWeight: '800', marginTop: 4 },
   statSub: { fontSize: 11, color: colors.faint, marginTop: 2 },
@@ -463,30 +463,30 @@ export const s = StyleSheet.create({
   kvLabel: { color: colors.muted, fontSize: 14 },
   kvValue: { fontSize: 14, fontWeight: '600' },
   item: {
-    flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: 16,
+    flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: 10,
     padding: 12, marginBottom: 8, borderWidth: 1, borderColor: colors.border,
   },
-  itemIcon: { width: 36, height: 36, borderRadius: 10, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  itemIcon: { width: 36, height: 36, borderRadius: 18, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
   itemTitle: { fontSize: 15, fontWeight: '700', color: colors.text, flexShrink: 1 },
   itemSub: { fontSize: 13, color: colors.muted, marginTop: 2 },
   itemMeta: { fontSize: 12, color: colors.faint, marginTop: 2 },
   itemRight: { fontSize: 15, fontWeight: '800' },
   search: {
-    flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#fff', borderRadius: 23,
+    flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: colors.surface, borderRadius: 8,
     borderWidth: 1, borderColor: colors.border, paddingHorizontal: 16, height: 46, marginBottom: 12,
     shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 1,
   },
   searchInput: { flex: 1, fontSize: 15, color: colors.text, outlineStyle: 'none' },
   fab: {
-    position: 'absolute', right: 18, height: 54, minWidth: 54, borderRadius: 27, backgroundColor: colors.brand,
+    position: 'absolute', right: 18, height: 54, minWidth: 54, borderRadius: 12, backgroundColor: colors.brand,
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 16, gap: 6,
     shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8, shadowOffset: { width: 0, height: 4 }, elevation: 5,
   },
-  fabText: { color: colors.onBrand, fontWeight: '800', fontSize: 15 },
+  fabText: { color: colors.onBrand, fontWeight: '800', fontSize: 14, textTransform: 'uppercase', letterSpacing: 1 },
   modalBack: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: colors.background, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 14, maxHeight: '80%' },
+  sheet: { backgroundColor: colors.background, borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: 14, maxHeight: '80%' },
   sheetHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
-  sheetTitle: { fontSize: 17, fontWeight: '800', color: colors.black },
+  sheetTitle: { fontSize: 17, fontWeight: '700', color: colors.black, fontFamily: fonts.display, textTransform: 'uppercase', letterSpacing: 1 },
   option: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 6, borderBottomWidth: 1, borderBottomColor: colors.border },
   optionText: { fontSize: 15, color: colors.text, fontWeight: '600' },
 });

@@ -12,7 +12,7 @@ import { useCart } from '../components/CartContext';
 import { api } from '../services/api';
 import { money } from '../services/format';
 import { getNewsSeen } from '../services/newsSeen';
-import { colors } from '../theme';
+import { colors, fonts } from '../theme';
 
 // Storefront: categories + product grid (also what staff see under "View shop")
 export default function HomeScreen({ navigation }) {
@@ -74,12 +74,12 @@ export default function HomeScreen({ navigation }) {
             const active = category === c.id;
             return (
               <TouchableOpacity style={st.cat} onPress={() => setCategory(c.id)} testID={`cat-${c.id}`}>
-                <View style={[st.catImgWrap, active && { borderColor: colors.primary }]}>
+                <View style={[st.catImgWrap, active && { borderColor: colors.brand }]}>
                   {c.id === 0
                     ? <View style={[st.catImg, { backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' }]}><Ionicons name="grid" size={24} color={colors.primary} /></View>
                     : <ProductImage uri={c.image} style={st.catImg} iconSize={22} />}
                 </View>
-                <Text style={[st.catText, active && { color: colors.primary }]} numberOfLines={1}>{c.name}</Text>
+                <Text style={[st.catText, active && { color: colors.brand, fontWeight: '900' }]} numberOfLines={1}>{c.name}</Text>
               </TouchableOpacity>
             );
           }}
@@ -95,7 +95,7 @@ export default function HomeScreen({ navigation }) {
         {shop?.logo_url ? <Image source={{ uri: shop.logo_url }} style={st.logo} resizeMode="contain" /> : null}
         <View style={{ flex: 1 }}>
           <Text style={st.shopName} numberOfLines={1}>{shop?.name}</Text>
-          <Text style={st.hello} numberOfLines={1}>{user ? `Hi, ${user.name?.split(' ')[0] || ''}` : 'Order online, pay on delivery'}</Text>
+          <Text style={st.hello} numberOfLines={1}>{user ? `Hi, ${user.name?.split(' ')[0] || ''}` : 'Pizza, late night · pay on delivery'}</Text>
         </View>
         {isStaff && <IconBadge icon="speedometer-outline" onPress={() => navigation.navigate('AdminHome')} />}
         <IconBadge icon="information-circle-outline" onPress={() => navigation.navigate('Contact')} testID="open-contact" />
@@ -122,11 +122,11 @@ export default function HomeScreen({ navigation }) {
 
       {cart.count > 0 && (
         <TouchableOpacity style={[st.cartBar, { bottom: 18 + insets.bottom }]} onPress={() => navigation.navigate('Cart')} testID="cart-bar">
-          <View style={st.cartCount}><Text style={{ color: colors.onBrand, fontWeight: '800' }}>{cart.count}</Text></View>
+          <View style={st.cartCount}><Text style={{ color: colors.brand, fontWeight: '800' }}>{cart.count}</Text></View>
           <Text style={st.cartBarText}>View cart</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <Text style={[st.cartBarText, { color: colors.brand }]}>{money(cart.subtotal)}</Text>
-            <Ionicons name="arrow-forward" size={18} color={colors.brand} />
+            <Text style={st.cartBarText}>{money(cart.subtotal)}</Text>
+            <Ionicons name="arrow-forward" size={18} color={colors.onBrand} />
           </View>
         </TouchableOpacity>
       )}
@@ -137,23 +137,23 @@ export default function HomeScreen({ navigation }) {
 const st = StyleSheet.create({
   top: {
     flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingBottom: 16,
-    backgroundColor: colors.brand, borderBottomLeftRadius: 24, borderBottomRightRadius: 24,
+    backgroundColor: colors.brand, borderBottomWidth: 3, borderBottomColor: colors.onBrand,
     shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 4, zIndex: 1,
   },
-  logo: { width: 44, height: 44, borderRadius: 14, backgroundColor: '#fff' },
-  shopName: { fontSize: 20, fontWeight: '900', color: colors.onBrand },
-  hello: { fontSize: 12, color: colors.onBrand, opacity: 0.75, fontWeight: '600' },
-  banner: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: colors.primarySoft, borderRadius: 16, padding: 10, marginBottom: 10 },
+  logo: { width: 46, height: 46, borderRadius: 23, backgroundColor: colors.brand, borderWidth: 1.5, borderColor: colors.onBrand },
+  shopName: { fontSize: 20, fontWeight: '700', color: colors.onBrand, fontFamily: fonts.display, textTransform: 'uppercase', letterSpacing: 2 },
+  hello: { fontSize: 12, color: colors.onBrand, opacity: 0.75, fontWeight: '600', fontStyle: 'italic' },
+  banner: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: colors.primarySoft, borderRadius: 8, padding: 10, marginBottom: 10 },
   bannerText: { flex: 1, color: colors.primaryDark, fontWeight: '600', fontSize: 13 },
   cat: { width: 72, alignItems: 'center' },
-  catImgWrap: { borderRadius: 20, borderWidth: 2, borderColor: 'transparent', padding: 2 },
-  catImg: { width: 60, height: 60, borderRadius: 16 },
+  catImgWrap: { borderRadius: 36, borderWidth: 2, borderStyle: 'dashed', borderColor: 'transparent', padding: 3 },
+  catImg: { width: 60, height: 60, borderRadius: 30 },
   catText: { fontSize: 12, fontWeight: '700', color: colors.text, marginTop: 4 },
   cartBar: {
-    position: 'absolute', left: 14, right: 14, bottom: 18, height: 58, borderRadius: 29, backgroundColor: colors.black,
+    position: 'absolute', left: 14, right: 14, bottom: 18, height: 58, borderRadius: 12, backgroundColor: colors.black, borderWidth: 2, borderColor: colors.onBrand,
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 14,
     shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 6,
   },
-  cartCount: { backgroundColor: colors.brand, borderRadius: 14, minWidth: 28, height: 28, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
-  cartBarText: { color: '#fff', fontWeight: '800', fontSize: 16 },
+  cartCount: { backgroundColor: colors.onBrand, borderRadius: 14, minWidth: 28, height: 28, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
+  cartBarText: { color: colors.onBrand, fontWeight: '800', fontSize: 15, textTransform: 'uppercase', letterSpacing: 1 },
 });
