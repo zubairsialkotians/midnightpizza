@@ -36,6 +36,8 @@ const primary = isHex(process.env.EXPO_PUBLIC_ACCENT_COLOR)
 export const colors = {
   brand,
   onBrand: onBrandEnv || (lightBrand ? '#1a1a1a' : '#ffffff'),
+  // Icons / text on the black buttons (− / + steppers, cart bar): the cream on black
+  onBlack: onBrandEnv || (lightBrand ? brand : '#ffffff'),
   primary,
   primaryDark: shade(primary, 0.35),
   primarySoft: onBrandEnv && !lightBrand ? onBrandEnv : tint(brand, lightBrand ? 0.8 : 0.88),
